@@ -54,14 +54,15 @@ switch method
 
         % setting initial condition
 %         F0 = repmat(ext_input_coeffs(:,1), 1, 4);
-        F0 = repmat(0.001*ones(num_modes,1), 1, 4);
+        F0 = repmat(1*ones(num_modes,1), 1, 4);
         
         F = F0;
-        sol.z(:,1) = F(:,1);
+        % sol.z(:,1) = F(:,1);
         sol.f(:,1) = F(:,2);
         sol.v(:,1) = F(:,3);
         sol.q(:,1) = F(:,4);
         
+        disp(param.T);
         for k = 2:length(param.T)
             dF = balloon_ODE(ext_input_coeffs(:,k-1), F, param);
             F = F + dF*param.tstep;

@@ -65,12 +65,23 @@ end
 
 t_interest_ind = dsearchn(t, t_interest);
 data_to_plot = data_to_plot(:,t_interest_ind);
+
+% vertex_means   = mean(data_to_plot, 2);                         % V×1
+% disp(vertex_means);
+% data_to_plot   = data_to_plot - repmat(vertex_means, 1, size(data_to_plot,2));
+
+cortex_ind   = setdiff(1:size(data_to_plot,1), medial_wall);
+frame_means = mean(data_to_plot(cortex_ind, :), 1);
+data_to_plot = data_to_plot - repmat(frame_means, size(data_to_plot,1), 1);
+
+
+
 data_to_plot = data_to_plot./repmat(max(data_to_plot,[],1), size(data_to_plot,1), 1);
 data_to_plot(isnan(data_to_plot)) = 0;
 
 if save_video
     writerObj = VideoWriter(output_filename);
-    writerObj.FrameRate=100;
+    writerObj.FrameRate=10;
     writerObj.Quality=100; % 1=min, 100=best
     open(writerObj);
 end
@@ -151,6 +162,21 @@ if with_medial
         set(ax2, 'CLim', clims, 'Colormap', [0.5 0.5 0.5; cmap])
         set(title1, 'String', sprintf('t = %.2f %s', t_interest(t_ind), time_units))
 
+        frame_mean = frame_means(t_ind);
+        % disp(frame_mean);
+        if ~exist('h_mean','var')
+            h_mean = text(ax1, 0.02, 0.95, ...
+                          sprintf('Mean = %.7f',frame_mean), ...
+                          'Units','normalized', ...
+                          'FontSize',10, ...
+                          'Color','k', ...
+                          'BackgroundColor','w', ...
+                          'EdgeColor','none');
+        else
+            set(h_mean, 'String', sprintf('Mean = %.7f',frame_mean));
+        end
+
+
         if save_video
             writeVideo(writerObj, getframe(fig));
         end
@@ -214,10 +240,26 @@ else
         set(ax1, 'CLim', clims, 'Colormap', [0.5 0.5 0.5; cmap])
         set(title1, 'String', sprintf('t = %.2f %s', t_interest(t_ind), time_units))
 
+        frame_mean = frame_means(t_ind);
+        % disp(frame_mean);
+        if ~exist('h_mean','var')
+            h_mean = text(ax1, 0.02, 0.95, ...
+                          sprintf('Mean = %.7f',frame_mean), ...
+                          'Units','normalized', ...
+                          'FontSize',10, ...
+                          'Color','k', ...
+                          'BackgroundColor','w', ...
+                          'EdgeColor','none');
+        else
+            set(h_mean, 'String', sprintf('Mean = %.7f',frame_mean));
+        end
+
+        drawnow
+
         if save_video
             writeVideo(writerObj, getframe(fig));
         end
-        drawnow
+       
     end
 end
 

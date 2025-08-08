@@ -1,4 +1,4 @@
-function [mode_activity, sim_activity] = model_neural_waves(eig_vec, eig_val, ext_input, param, method)
+function [mode_activity, sim_activity] = model_neural_waves(eig_vec, eig_val, ext_input, init, param, method)
 % model_neural_waves.m
 %
 % Simulate neural waves on a surface using eigenmodes.
@@ -35,7 +35,7 @@ switch method
         ext_input_coeffs = calc_eigendecomposition(ext_input, eig_vec, 'matrix');
 
         % initialize simulated activity vector
-        sim_activity = zeros(num_modes, size(ext_input_coeffs,2));
+        sim_activity = ones(num_modes, size(ext_input_coeffs,2)) * init;
 
         for mode_ind = 1:num_modes
             mode_coeff = ext_input_coeffs(mode_ind,:);

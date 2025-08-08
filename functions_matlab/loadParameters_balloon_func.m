@@ -53,7 +53,7 @@ function param = loadParameters_balloon_func
     % ===================================================================== 
 
     param.tstep    = 0.01;       % time step
-    param.tmax     = 100;        % maximum time
+    param.tmax     = 1;        % maximum time
         
     % =====================================================================
     %                     DEPENDENT PARAMETERS

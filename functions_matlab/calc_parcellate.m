@@ -13,6 +13,7 @@ function data_parcellated = calc_parcellate(parc, data_input)
 %%
 
 num_vertices = size(parc,1);
+disp(num_vertices);
 parcels = unique(parc(parc>0));
 num_parcels = length(parcels);
 
@@ -27,5 +28,5 @@ for parcel_ind = 1:num_parcels
 
     ind_parcel = find(parc==parcel_interest);
     
-    data_parcellated(parcel_ind,:) = nanmean(data_input(ind_parcel,:));
+    data_parcellated(parcel_ind,:) = mean(data_input(ind_parcel,:));
 end
